@@ -1,0 +1,64 @@
+{
+	"id": "67f38577-9816-4b41-bc22-0d1e8cb75658",
+	"name": "Hiringtek Service Now Change Request",
+	"friendlyName": "Create Change Request",
+	"description": "Create a change request in Service Now",
+	"author": "Rohit Prakash",
+	"helpUrl": "https://docs.microsoft.com/azure/devops/pipelines/tasks/utility/http-rest-api",
+	"helpMarkDown": "[Learn more about this task](https://go.microsoft.com/fwlink/?linkid=870236)",
+	"category": "Deploy",
+	"visibility": ["Build", "Release"],
+	"runsOn": ["Server", "ServerGate"],
+	"version": {
+		"Major": 1,
+		"Minor": 0,
+		"Patch": 0
+	},
+	"instanceNameFormat": "Call ServiceNow REST API: $(method)",
+	"inputs": [
+		{
+			"name": "method",
+			"type": "pickList",
+			"label": "Method",
+			"required": "true",
+			"defaultValue": "POST",
+			"options": {
+				"OPTIONS": "OPTIONS",
+				"GET": "GET",
+				"HEAD": "HEAD",
+				"POST": "POST",
+				"PUT": "PUT",
+				"DELETE": "DELETE",
+				"TRACE": "TRACE",
+				"PATCH": "PATCH"
+			},
+			"helpMarkDown": "Select the HTTP method with which the API should be invoked."
+		},
+		{
+			"name": "body",
+			"type": "multiLine",
+			"label": "Body",
+			"required": "false",
+			"defaultValue": "",
+			"properties": {
+				"resizable": "true",
+				"rows": "3",
+				"maxLength": "2000"
+			},
+			"visibleRule": "method != GET && method != HEAD"
+		},
+		{
+			"name": "urlSuffix",
+			"type": "string",
+			"label": "URL suffix and parameters",
+			"defaultValue": "",
+			"required": false,
+			"helpMarkDown": "Given string append to the URL. Example: If the service connection URL is https:...TestProj/_apis/Release/releases and the URL suffix is /2/environments/1, the service connection URL becomes https:.../TestProj/_apis/Release/releases/2/environments/1. If the URL suffix is ?definitionId=1&releaseCount=1 then the service connection URL becomes https//...TestProj/_apis/Release/releases?definitionId=1&releaseCount=1."
+		}
+	],
+	"execution": {
+		"Node10": {
+			"target": "index.js"
+		}
+	}
+}
