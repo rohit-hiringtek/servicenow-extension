@@ -5,13 +5,28 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
+			"name": "Run TypeScript",
 			"type": "pwa-node",
 			"request": "launch",
-			"name": "Launch Program",
-			"skipFiles": [
-				"<node_internals>/**"
-			],
-			"program": "${workspaceFolder}\\index.js"
+			"internalConsoleOptions": "openOnSessionStart",
+			"stopOnEntry": false,
+			// path to your ts file
+			"args": ["index.ts"],
+			"cwd": "${workspaceRoot}",
+			"runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
+			"env": {
+				"NODE_ENV": "development",
+				// param (enter your input params here!)
+				"INPUT_method": "GET",
+				"INPUT_urlSuffix": "/api/now/table/incident",
+				// env
+				"username": "admin",
+				"password": "FfB7dW=*k7Bf",
+				"host": "https://dev75028.service-now.com",
+				// debug
+				"DEBUG_PAT": "my debug pat"
+			},
+			"skipFiles": ["<node_internals>/**"]
 		}
 	]
 }

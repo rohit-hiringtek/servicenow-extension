@@ -1,5 +1,5 @@
-import tl from 'azure-pipelines-task-lib/task';
-import fetch from 'node-fetch';
+import tl = require('azure-pipelines-task-lib/task');
+import axios, { AxiosRequestHeaders } from 'axios';
 async function run() {
 	try {
 		console.log('Starting task');
@@ -12,9 +12,15 @@ async function run() {
 		const apiEndpoint = tl.getInput('urlSuffix', true);
 		const httpMethod = tl.getInput('method', true);
 		const body = tl.getInput('body', false);
-		const headers = `\n\"Content-Type\": \"application/json\", \n\"Accept\": \"application/json\", \n\"Authorization\": \"Basic ${Buffer.from(
-			`${username}:${password}`
-		).toString('base64')}\"`;
+		// const headers = `\n\"Content-Type\": \"application/json\", \n\"Accept\": \"application/json\", \n\"Authorization\": \"Basic ${Buffer.from(
+		// 	`${username}:${password}`
+		// ).toString('base64')}\"`;
+
+		const headers: AxiosRequestHeaders = {
+			'Content-Type': 'application/json',
+			'Accept': 'application/json',
+			'Authorization': `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`
+		}
 		const url = `${host}/${apiEndpoint}`;
 
 		console.log(`Sending request to ${url}`);
@@ -22,13 +28,13 @@ async function run() {
 		console.log(`Headers: ${headers}`);
 		console.log(`Body: ${body}`);
 		try {
-			const response = await fetch(url, {
-				method: httpMethod?.toLowerCase(),
+			const response = await axios({
+				url: url,
+				method: httpMethod,
 				headers: headers,
-				body: body,
+				data: body ? body : undefined
 			});
-			const data = await response.json();
-			console.log(`Response: ${JSON.stringify(data)}`);
+			console.log(`Response: ${JSON.stringify(response.data)}`);
 			if (response.status >= 400) {
 				tl.setResult(
 					tl.TaskResult.Failed,

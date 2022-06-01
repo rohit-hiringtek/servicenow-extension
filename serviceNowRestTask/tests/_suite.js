@@ -27,7 +27,7 @@ describe('Sample task tests', function () {
     after(() => { });
     it('should succeed with sample get call', function (done) {
         console.log('Running GET call');
-        let tp = path.join(__dirname, 'success.js');
+        let tp = path.join(__dirname, 'success.ts');
         let tr = new ttm.MockTestRunner(tp);
         tr.run();
         assert.equal(tr.succeeded, true, 'should have succeeded');

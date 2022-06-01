@@ -12,46 +12,53 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const task_1 = __importDefault(require("azure-pipelines-task-lib/task"));
-const node_fetch_1 = __importDefault(require("node-fetch"));
+const tl = require("azure-pipelines-task-lib/task");
+const axios_1 = __importDefault(require("axios"));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             console.log('Starting task');
-            const username = task_1.default.getVariable('username');
-            const password = task_1.default.getVariable('password');
-            const host = task_1.default.getVariable('host');
+            const username = tl.getVariable('username');
+            const password = tl.getVariable('password');
+            const host = tl.getVariable('host');
             console.log(`Connecting to Service Now instance ${host}`);
-            const apiEndpoint = task_1.default.getInput('urlSuffix', true);
-            const httpMethod = task_1.default.getInput('method', true);
-            const body = task_1.default.getInput('body', false);
-            const headers = `\n\"Content-Type\": \"application/json\", \n\"Accept\": \"application/json\", \n\"Authorization\": \"Basic ${Buffer.from(`${username}:${password}`).toString('base64')}\"`;
+            const apiEndpoint = tl.getInput('urlSuffix', true);
+            const httpMethod = tl.getInput('method', true);
+            const body = tl.getInput('body', false);
+            // const headers = `\n\"Content-Type\": \"application/json\", \n\"Accept\": \"application/json\", \n\"Authorization\": \"Basic ${Buffer.from(
+            // 	`${username}:${password}`
+            // ).toString('base64')}\"`;
+            const headers = {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`
+            };
             const url = `${host}/${apiEndpoint}`;
             console.log(`Sending request to ${url}`);
             console.log(`Method: ${httpMethod}`);
             console.log(`Headers: ${headers}`);
             console.log(`Body: ${body}`);
             try {
-                const response = yield node_fetch_1.default(url, {
-                    method: httpMethod === null || httpMethod === void 0 ? void 0 : httpMethod.toLowerCase(),
+                const response = yield axios_1.default({
+                    url: url,
+                    method: httpMethod,
                     headers: headers,
-                    body: body,
+                    data: body ? body : undefined
                 });
-                const data = yield response.json();
-                console.log(`Response: ${JSON.stringify(data)}`);
+                console.log(`Response: ${JSON.stringify(response.data)}`);
                 if (response.status >= 400) {
-                    task_1.default.setResult(task_1.default.TaskResult.Failed, `${response.status} ${response.statusText}`);
+                    tl.setResult(tl.TaskResult.Failed, `${response.status} ${response.statusText}`);
                     return;
                 }
-                task_1.default.setResult(task_1.default.TaskResult.Succeeded, 'REST API Call Success');
+                tl.setResult(tl.TaskResult.Succeeded, 'REST API Call Success');
             }
             catch (err) {
                 console.log(err);
-                task_1.default.setResult(task_1.default.TaskResult.Failed, err.message);
+                tl.setResult(tl.TaskResult.Failed, err.message);
             }
         }
         catch (err) {
-            task_1.default.setResult(task_1.default.TaskResult.Failed, err.message);
+            tl.setResult(tl.TaskResult.Failed, err.message);
         }
     });
 }
