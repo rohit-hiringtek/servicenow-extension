@@ -1,0 +1,32 @@
+{
+	"manifestVersion": 1,
+	"id": "service-now-invoke-http-task",
+	"name": "Hiringtek Service Now Invoke HTTP Task",
+	"version": "1.0.2",
+	"publisher": "Hiringtek",
+	"targets": [
+		{
+			"id": "Microsoft.VisualStudio.Services"
+		}
+	],
+	"description": "Tools for building/releasing with Hiringtek. Includes one build/release task.",
+	"categories": ["Azure Pipelines"],
+	"icons": {
+		"default": "images/extension-icon.png"
+	},
+	"files": [
+		{
+			"path": "serviceNowInvokeRest"
+		}
+	],
+	"contributions": [
+		{
+			"id": "service-now-rest-task",
+			"type": "ms.vss-distributed-task.task",
+			"targets": ["ms.vss-distributed-task.tasks"],
+			"properties": {
+				"name": "serviceNowInvokeRest"
+			}
+		}
+	]
+}

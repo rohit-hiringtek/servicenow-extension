@@ -18,9 +18,9 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             console.log('Starting task');
-            const username = tl.getVariable('username');
-            const password = tl.getVariable('password');
-            const host = tl.getVariable('host');
+            const username = tl.getVariable('USERNAME');
+            const password = tl.getVariable('PASSWORD');
+            const host = tl.getVariable('HOST');
             console.log(`Connecting to Service Now instance ${host}`);
             const apiEndpoint = tl.getInput('urlSuffix', true);
             const httpMethod = tl.getInput('method', true);
@@ -30,8 +30,8 @@ function run() {
             // ).toString('base64')}\"`;
             const headers = {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`
+                Accept: 'application/json',
+                Authorization: `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`,
             };
             const url = `${host}/${apiEndpoint}`;
             console.log(`Sending request to ${url}`);
@@ -41,11 +41,11 @@ function run() {
             try {
                 const response = yield axios_1.default({
                     url: url,
-                    method: httpMethod,
+                    method: httpMethod === null || httpMethod === void 0 ? void 0 : httpMethod.toLocaleLowerCase(),
                     headers: headers,
-                    data: body ? body : undefined
+                    data: body ? body : undefined,
                 });
-                console.log(`Response: ${JSON.stringify(response.data)}`);
+                // console.log(`Response: ${JSON.stringify(response.data)}`);
                 if (response.status >= 400) {
                     tl.setResult(tl.TaskResult.Failed, `${response.status} ${response.statusText}`);
                     return;

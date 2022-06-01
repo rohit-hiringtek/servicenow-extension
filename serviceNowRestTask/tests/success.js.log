@@ -1,0 +1,25 @@
+##vso[task.debug]agent.TempDirectory=undefined
+##vso[task.debug]agent.workFolder=undefined
+##vso[task.debug]loading inputs and endpoints
+##vso[task.debug]loading INPUT_METHOD
+##vso[task.debug]loading INPUT_URLSUFFIX
+##vso[task.debug]loaded 2
+##vso[task.debug]Agent.ProxyUrl=undefined
+##vso[task.debug]Agent.CAInfo=undefined
+##vso[task.debug]Agent.ClientCert=undefined
+##vso[task.debug]Agent.SkipCertValidation=undefined
+Starting task
+##vso[task.debug]USERNAME=admin
+##vso[task.debug]PASSWORD=FfB7dW=*k7Bf
+##vso[task.debug]HOST=https://dev75028.service-now.com
+Connecting to Service Now instance https://dev75028.service-now.com
+##vso[task.debug]urlSuffix=/api/now/table/incident
+##vso[task.debug]method=get
+##vso[task.debug]body=undefined
+Sending request to https://dev75028.service-now.com//api/now/table/incident
+Method: get
+Headers: [object Object]
+Body: undefined
+##vso[task.debug]task result: Succeeded
+##vso[task.complete result=Succeeded;]REST API Call Success
+
